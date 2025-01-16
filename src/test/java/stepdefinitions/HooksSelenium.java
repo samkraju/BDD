@@ -2,6 +2,8 @@ package stepdefinitions;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.OutputType;
@@ -17,6 +19,7 @@ import io.cucumber.java.AfterAll;
 import io.cucumber.java.Before;
 import io.cucumber.java.BeforeAll;
 import io.cucumber.java.Scenario;
+import io.cucumber.messages.types.Timestamp;
 
 public class HooksSelenium {
 	public BaseDriver baseDriver;
@@ -50,13 +53,15 @@ public class HooksSelenium {
 
 	@After
 	public void closeBrowser(Scenario scenario) {
+
+		String timestampString = new SimpleDateFormat("dd.MM.yyyy.mm.ss").format(new Date());
 		String scenarioName = scenario.getName();
 		boolean failed = scenario.isFailed();
-		System.out.println("+++++++"+failed+"++++++");
+		System.out.println("+++++++" + failed + "++++++");
 		if (failed) {
 			TakesScreenshot t = (TakesScreenshot) baseDriver.driver;
 			File src = t.getScreenshotAs(OutputType.FILE);
-			File dst = new File("./target/img/" + scenarioName + ".png");
+			File dst = new File("./target/img/" + scenarioName+timestampString + ".png");
 			try {
 				FileUtils.copyFile(src, dst);
 			} catch (IOException e) {

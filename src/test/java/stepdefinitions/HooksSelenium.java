@@ -2,13 +2,16 @@ package stepdefinitions;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.MediaEntityBuilder;
@@ -19,7 +22,6 @@ import io.cucumber.java.AfterAll;
 import io.cucumber.java.Before;
 import io.cucumber.java.BeforeAll;
 import io.cucumber.java.Scenario;
-import io.cucumber.messages.types.Timestamp;
 
 public class HooksSelenium {
 	public BaseDriver baseDriver;
@@ -49,6 +51,9 @@ public class HooksSelenium {
 		baseDriver.test = BaseDriver.report.createTest(scenarioName);
 		baseDriver.test.info("Opening the browser");
 		baseDriver.driver = new ChromeDriver();
+		// how to setup GRID(Assignment question)
+//	    URL gridurl=new URL("")
+//		baseDriver.driver = new RemoteWebDriver(gridURL,options);
 	}
 
 	@After
@@ -61,7 +66,7 @@ public class HooksSelenium {
 		if (failed) {
 			TakesScreenshot t = (TakesScreenshot) baseDriver.driver;
 			File src = t.getScreenshotAs(OutputType.FILE);
-			File dst = new File("./target/img/" + scenarioName+timestampString + ".png");
+			File dst = new File("./target/img/" + scenarioName + timestampString + ".png");
 			try {
 				FileUtils.copyFile(src, dst);
 			} catch (IOException e) {
